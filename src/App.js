@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from "react";
+import ShowAllSection from "./Components/ShowAllSection";
+import Api from "./api";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const Context = React.createContext({})
+function DisplayStatus(status){
+	switch (status){
+		case "Online":
+			return <b style={{color: "green"}}>Online</b>
+		case "Empty":
+			return <b style={{color: "orange"}}>Empty</b>
+		default:
+			return <b style={{color: "red"}}>Offline</b>
+	}
 }
 
-export default App;
+function App() {
+	const [status, setStatus] = useState("Offline");
+	const [user, setUser] = useState("username")
+	const [data, setData] = useState({})
+	return (
+		<Context.Provider value={{
+			status : status,
+			setStatus: setStatus,
+			user:user,
+			setUser:setUser,
+			data:data,
+			setData:setData
+		}}>
+		<main className="App" id="crack">
+			<div className="UserSector">
+				<span className="UserSector">User: <input
+					type="text"
+					className="UserSector"
+					placeholder="username"
+					autoComplete="off"
+					onChange={(e) => {
+						setUser(e.target.value)
+						Api.CheckUser(e.target.value).then(a => setStatus(a))
+					}}
+				/> Status: {DisplayStatus(status)}
+				</span>
+			</div>
+			<ShowAllSection></ShowAllSection>
+		</main>
+		</Context.Provider>
+	);
+}
+
+
+export {App, Context};
