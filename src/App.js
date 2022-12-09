@@ -18,6 +18,7 @@ function App() {
 	const [status, setStatus] = useState("Offline");
 	const [user, setUser] = useState("username")
 	const [data, setData] = useState({})
+	let [isShowAllSectionOpened, setShowAllSectionOpened] = useState(false)
 	return (
 		<Context.Provider value={{
 			status : status,
@@ -25,7 +26,9 @@ function App() {
 			user:user,
 			setUser:setUser,
 			data:data,
-			setData:setData
+			setData:setData,
+			isShowAllSectionOpened:isShowAllSectionOpened,
+			setShowAllSectionOpened:setShowAllSectionOpened
 		}}>
 		<main className="App" id="crack">
 			<div className="UserSector">
@@ -36,6 +39,7 @@ function App() {
 					autoComplete="off"
 					onChange={(e) => {
 						setUser(e.target.value)
+						setShowAllSectionOpened(false)
 						Api.CheckUser(e.target.value).then(a => setStatus(a))
 					}}
 				/> Status: {DisplayStatus(status)}
