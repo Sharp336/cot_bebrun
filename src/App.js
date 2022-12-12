@@ -15,8 +15,9 @@ function DisplayStatus(status){
 }
 
 function App() {
-	const [status, setStatus] = useState("Offline");
 	const [user, setUser] = useState("username")
+	const [currentCat, setCurrentCat] = useState(NaN)
+	const [status, setStatus] = useState("Offline");
 	const [data, setData] = useState({})
 	let [isShowAllSectionOpened, setShowAllSectionOpened] = useState(false)
 	return (
@@ -28,19 +29,35 @@ function App() {
 			data:data,
 			setData:setData,
 			isShowAllSectionOpened:isShowAllSectionOpened,
-			setShowAllSectionOpened:setShowAllSectionOpened
+			setShowAllSectionOpened:setShowAllSectionOpened,
+			currentCat:currentCat,
+			setCurrentCat:setCurrentCat
 		}}>
 		<main className="App" id="crack">
 			<div className="UserSector">
-				<span className="UserSector">User: <input
+				<span className="UserSector">
+					User:  <input
+
 					type="text"
 					className="UserSector"
 					placeholder="username"
 					autoComplete="off"
+
 					onChange={(e) => {
 						setUser(e.target.value)
 						setShowAllSectionOpened(false)
 						Api.CheckUser(e.target.value).then(a => setStatus(a))
+					}}
+				/> Cat: <input
+
+					type="number"
+					className="UserSector"
+					placeholder="ID"
+					autoComplete="off"
+
+					onChange={(e) => {
+						setCurrentCat(parseInt(e.target.value))
+						setShowAllSectionOpened(false)
 					}}
 				/> Status: {DisplayStatus(status)}
 				</span>

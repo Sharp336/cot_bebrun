@@ -15,8 +15,8 @@ class Api {
         return await fetch( `https://cats.petiteweb.dev/api/single/${user}/show`).then(a => a.json())
     }
 
-    static async getSingle(user, id = 0) {
-        return await fetch( `https://cats.petiteweb.dev/api/single/${user}/show/${id}`).then(res => res.json()).then(data => data.data);
+    static async getSingle(user, id) {
+        return await fetch( `https://cats.petiteweb.dev/api/single/${user}/show/${id}`).then(a => a.json())
     }
 
     static async addCat(body, path="https://cats.petiteweb.dev/api/single/astrology_noob/add") {

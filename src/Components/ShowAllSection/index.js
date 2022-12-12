@@ -1,7 +1,8 @@
 import "./style.css";
 import ArrowDown from "../../images/arrow_down.svg"
 import ArrowUp from "../../images/arrow_up.svg"
-import React, {useContext, useState} from "react";
+import Cross from "../../images/cross.svg"
+import React, {useContext} from "react";
 import {Context} from "../../App";
 import Api from "../../api";
 
@@ -40,7 +41,7 @@ const showInfo = function (data) {
     infoBlock.firstElementChild.innerHTML = `
         <img class="info-img" src="${data.image ?? shaverma}" alt="${data.name}"/>
         <div class="information">
-            <h2>${data.name ?? "неизвестно"}</h2>
+            <h2>${data.id + ' - ' + (data.name ?? "неизвестно")}</h2>
             <h3>${data.age ?? "неизвестно"} ${getWord(data.age)}</h3>
             <p>${data.description ?? "описания нет"}</p>
         </div>
@@ -49,30 +50,42 @@ const showInfo = function (data) {
 }
 let bebra = function (cats) {
     const main = document.getElementsByClassName("ShowAllSectionContent").item(0);
-    cats.forEach(cat => {
-        getItem(cat, main);
-    });
+    if (cats.length > 1){
+        cats.forEach(cat => {getItem(cat, main);});
 
-    const cards = document.getElementsByClassName("catcard");
+        const cards = document.getElementsByClassName("catcard");
 
-    for (let i = 0; i < cards.length; i++) {
-        cards[i].addEventListener("click", function () {
-            showInfo(cats[i]);
+        for (let i = 0; i < cards.length; i++) {
+            cards[i].addEventListener("click", function () {
+                showInfo(cats[i]);
+            })
+        }
+    }
+    else {
+        getItem(cats, main)
+        const card = document.getElementsByClassName("catcard");
+        card[0].addEventListener("click", function () {
+            showInfo(cats)
         })
     }
+
+
 
     infoBlock = document.querySelector(".info-block");
 }
 
-let getcats = async function(user){
+let getAllCats = async function(user){
     await Api.getAll(user).then(a => bebra(a))
 }
 
+let getOneCat = async function(user, catId){
+    await Api.getSingle(user, catId).then(a => bebra(a))
+}
 
 const ShowAllSection = () => {
     const context = useContext(Context)
-    const [user, status, isShowAllSectionOpened, setShowAllSectionOpened] = [context.user, context.status, context.isShowAllSectionOpened, context.setShowAllSectionOpened]
-    return status !== "Online" ? null :
+    const [user, status, isShowAllSectionOpened, setShowAllSectionOpened, currentCat] = [context.user, context.status, context.isShowAllSectionOpened, context.setShowAllSectionOpened, context.currentCat]
+    return status === "Offline" ? null :
         <div className="ShowAllSection">
             <div className="ShowAllSectionHeader">
                 <span className="GETlabel">
@@ -80,14 +93,18 @@ const ShowAllSection = () => {
                 </span>
 
                 <span className="SectionRequest">
-                    <b>{`/api/single/${user}/show/`}</b>
+                    <b>{`/api/single/${user}/show/${!isNaN(currentCat) ? currentCat : ''}`}</b>
                 </span>
 
                 <span className="OpenSection">
-                    {!isShowAllSectionOpened ?
-                        <img className="arrow" id="ToggleShowAllSection" src={ArrowDown} onClick={() => {setShowAllSectionOpened(true); getcats(user)}} alt="Open"/>
-                    :
-                        <img className="arrow" id="ToggleShowAllSection" src={ArrowUp} onClick={() => {setShowAllSectionOpened(false)}} alt="Open"/> }
+                    { status === "Empty" ?
+                        <img className="cross" src={Cross} alt="Section Unavailable"/>
+                        :
+                        (!isShowAllSectionOpened ?
+                            <img className="arrow" id="ToggleShowAllSection" src={ArrowDown} onClick={() => {isNaN(currentCat) ? getAllCats(user) : getOneCat(user, currentCat); setShowAllSectionOpened(true)}} alt="Open"/>
+                            :
+                            <img className="arrow" id="ToggleShowAllSection" src={ArrowUp} onClick={() => {setShowAllSectionOpened(false)}} alt="Open"/>)
+                    }
                 </span>
             </div>
             {!isShowAllSectionOpened ? null :
