@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import ShowAllCatsSection from "./Components/ShowAllCatsSection";
 import ShowAllIdsSection from "./Components/ShowAllIdsSection";
+import CreateNewCatSection from "./Components/CreateNewCatSection";
 import Api from "./api";
 
 const Context = React.createContext({})
@@ -26,6 +27,7 @@ function App() {
 	const [data, setData] = useState({})
 	let [isShowAllCatsSectionOpened, setShowAllCatsSectionOpened] = useState(false)
 	let [isShowAllIdsSectionOpened, setShowAllIdsSectionOpened] = useState(false)
+	let [isCreateNewCatSectionOpened, setCreateNewCatSectionOpened] = useState(false)
 	return (
 		<Context.Provider value={{
 			status : status,
@@ -39,7 +41,9 @@ function App() {
 			currentCat:currentCat,
 			setCurrentCat:setCurrentCat,
 			isShowAllIdsSectionOpened:isShowAllIdsSectionOpened,
-			setShowAllIdsSectionOpened:setShowAllIdsSectionOpened
+			setShowAllIdsSectionOpened:setShowAllIdsSectionOpened,
+			isCreateNewCatSectionOpened:isCreateNewCatSectionOpened,
+			setCreateNewCatSectionOpened:setCreateNewCatSectionOpened
 		}}>
 		<main className="App" id="crack">
 			<div className="UserSector">
@@ -85,6 +89,7 @@ function App() {
 			</div>
 			<ShowAllCatsSection/>
 			<ShowAllIdsSection/>
+			<CreateNewCatSection/>
 		</main>
 		</Context.Provider>
 	);

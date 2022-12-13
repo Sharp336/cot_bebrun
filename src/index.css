@@ -49,6 +49,17 @@ input.UserSector{
 	min-width: 8vw;
 }
 
+.POSTlabel{
+	background: #49cc90;
+	border-radius: 10px;
+	color: white;
+	font-weight: 700;
+	padding: 1%;
+	display: table-cell;
+	vertical-align: middle;
+	min-width: 8vw;
+}
+
 
 .SectionRequest{
 	display: table-cell;

@@ -1,0 +1,36 @@
+div.CreateNewCatSection{
+    width: 70%;
+    padding-top: 1%;
+    padding-bottom: 0.5%;
+}
+
+div.CreateNewCatSectionHeader{
+    width: 100%;
+    background: rgb(204, 255, 255);
+    border-radius: 30px;
+    color: #282c34;
+    font-size: 90%;
+    border: 3px solid black;
+    padding: 1%;
+    display: table;
+    border-spacing: 10px;
+    margin-bottom: 1%;
+}
+div.CreateNewCatSectionContent{
+    background: rgb(204, 255, 255);
+    width: 100%;
+    border-radius: 10px;
+    color: #282c34;
+    font-size: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: calc((100% / 300) + 30px);
+    border-spacing: 10px;
+    border: 3px solid black;
+}
+
+button{
+    width: 30%;
+    height: 10vh;
+}

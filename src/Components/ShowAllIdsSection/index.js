@@ -33,9 +33,9 @@ const ShowAllIdsSection = () => {
                         <img className="cross" src={Cross} alt="Section Unavailable"/>
                         :
                         (!isShowAllIdsSectionOpened ?
-                            <img className="arrow" id="ToggleShowAllSection" src={ArrowDown} onClick={() => {getAllCats(user); setShowAllIdsSectionOpened(true)}} alt="Open"/>
+                            <img className="arrow" id="ToggleShowAllIdsSection" src={ArrowDown} onClick={() => {getAllCats(user); setShowAllIdsSectionOpened(true)}} alt="Open"/>
                             :
-                            <img className="arrow" id="ToggleShowAllSection" src={ArrowUp} onClick={() => {setShowAllIdsSectionOpened(false)}} alt="Open"/>)
+                            <img className="arrow" id="ToggleShowAllIdsSection" src={ArrowUp} onClick={() => {setShowAllIdsSectionOpened(false)}} alt="Open"/>)
                     }
                 </span>
             </div>

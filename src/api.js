@@ -28,16 +28,15 @@ class Api {
         return await fetch( `https://cats.petiteweb.dev/api/single/${user}/ids/`).then(a => a.json())
     }
 
-    static async addCat(body, path="https://cats.petiteweb.dev/api/single/astrology_noob/add") {
-        console.log(JSON.stringify(body));
-        return await fetch(path, {
+    static async addCat(user, data) {
+        return await fetch(`https://cats.petiteweb.dev/api/single/${user}/add`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
-            body: JSON.stringify(body)
-        }).then(res => res.json()).then(data => data);
+            body: JSON.stringify(data)
+        }).then(res => res.json());
     }
 
     static async updateCat(id, body, path="https://cats.petiteweb.dev/api/single/astrology_noob/update") {
