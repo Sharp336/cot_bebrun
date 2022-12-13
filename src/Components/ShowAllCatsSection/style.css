@@ -1,6 +1,7 @@
 div.ShowAllSection{
     width: 70%;
-    padding: 1%;
+    padding-top: 1%;
+    padding-bottom: 0.5%;
 }
 
 div.ShowAllSectionHeader{

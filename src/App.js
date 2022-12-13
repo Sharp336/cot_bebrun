@@ -1,16 +1,21 @@
 import React, {useState} from "react";
-import ShowAllSection from "./Components/ShowAllSection";
+import ShowAllCatsSection from "./Components/ShowAllCatsSection";
+import ShowAllIdsSection from "./Components/ShowAllIdsSection";
 import Api from "./api";
 
 const Context = React.createContext({})
 function DisplayStatus(status){
 	switch (status){
 		case "Online":
-			return <b style={{color: "green"}}>Online</b>
+			return <b style={{color: "green"}}>{status}</b>
 		case "Empty":
-			return <b style={{color: "orange"}}>Empty</b>
+			return <b style={{color: "orange"}}>{status}</b>
+		case "Found":
+			return <b style={{color: "green"}}>{status}</b>
+		case "Not found":
+			return <b style={{color: "orange"}}>{status}</b>
 		default:
-			return <b style={{color: "red"}}>Offline</b>
+			return <b style={{color: "red"}}>{status}</b>
 	}
 }
 
@@ -19,7 +24,8 @@ function App() {
 	const [currentCat, setCurrentCat] = useState(NaN)
 	const [status, setStatus] = useState("Offline");
 	const [data, setData] = useState({})
-	let [isShowAllSectionOpened, setShowAllSectionOpened] = useState(false)
+	let [isShowAllCatsSectionOpened, setShowAllCatsSectionOpened] = useState(false)
+	let [isShowAllIdsSectionOpened, setShowAllIdsSectionOpened] = useState(false)
 	return (
 		<Context.Provider value={{
 			status : status,
@@ -28,10 +34,12 @@ function App() {
 			setUser:setUser,
 			data:data,
 			setData:setData,
-			isShowAllSectionOpened:isShowAllSectionOpened,
-			setShowAllSectionOpened:setShowAllSectionOpened,
+			isShowAllCatsSectionOpened:isShowAllCatsSectionOpened,
+			setShowAllCatsSectionOpened:setShowAllCatsSectionOpened,
 			currentCat:currentCat,
-			setCurrentCat:setCurrentCat
+			setCurrentCat:setCurrentCat,
+			isShowAllIdsSectionOpened:isShowAllIdsSectionOpened,
+			setShowAllIdsSectionOpened:setShowAllIdsSectionOpened
 		}}>
 		<main className="App" id="crack">
 			<div className="UserSector">
@@ -43,10 +51,19 @@ function App() {
 					placeholder="username"
 					autoComplete="off"
 
-					onChange={(e) => {
+					onChange={async (e) => {
+						let tmps
 						setUser(e.target.value)
-						setShowAllSectionOpened(false)
-						Api.CheckUser(e.target.value).then(a => setStatus(a))
+						setShowAllCatsSectionOpened(false)
+						setShowAllIdsSectionOpened(false)
+						setCurrentCat(NaN)
+						await Api.CheckUser(e.target.value).then(a => {
+							tmps = a;
+							setStatus(a)
+						})
+						let idinputfield = document.getElementById("catidinput")
+						idinputfield.value = ''
+						idinputfield.disabled = tmps !== "Online"
 					}}
 				/> Cat: <input
 
@@ -54,15 +71,20 @@ function App() {
 					className="UserSector"
 					placeholder="ID"
 					autoComplete="off"
+					id="catidinput"
+					disabled={true}
 
 					onChange={(e) => {
 						setCurrentCat(parseInt(e.target.value))
-						setShowAllSectionOpened(false)
+						setShowAllCatsSectionOpened(false)
+						if (e.target.value === '')  Api.CheckUser(user).then(a => setStatus(a))
+						else Api.CheckCat(user, e.target.value).then(a => setStatus(a))
 					}}
 				/> Status: {DisplayStatus(status)}
 				</span>
 			</div>
-			<ShowAllSection></ShowAllSection>
+			<ShowAllCatsSection/>
+			<ShowAllIdsSection/>
 		</main>
 		</Context.Provider>
 	);

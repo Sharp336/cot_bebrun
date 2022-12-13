@@ -48,7 +48,8 @@ const showInfo = function (data) {
 `;
     document.getElementById("fknclose").addEventListener("click", function () {infoBlock.classList.remove("active");})
 }
-let bebra = function (cats) {
+let showCats = function (cats) {
+
     const main = document.getElementsByClassName("ShowAllSectionContent").item(0);
     if (cats.length > 1){
         cats.forEach(cat => {getItem(cat, main);});
@@ -75,16 +76,16 @@ let bebra = function (cats) {
 }
 
 let getAllCats = async function(user){
-    await Api.getAll(user).then(a => bebra(a))
+    await Api.getAll(user).then(a => showCats(a))
 }
 
 let getOneCat = async function(user, catId){
-    await Api.getSingle(user, catId).then(a => bebra(a))
+    await Api.getSingle(user, catId).then(a => showCats(a))
 }
 
-const ShowAllSection = () => {
+const ShowAllCatsSection = () => {
     const context = useContext(Context)
-    const [user, status, isShowAllSectionOpened, setShowAllSectionOpened, currentCat] = [context.user, context.status, context.isShowAllSectionOpened, context.setShowAllSectionOpened, context.currentCat]
+    const [user, status, isShowAllCatsSectionOpened, setShowAllCatsSectionOpened, currentCat] = [context.user, context.status, context.isShowAllCatsSectionOpened, context.setShowAllCatsSectionOpened, context.currentCat]
     return status === "Offline" ? null :
         <div className="ShowAllSection">
             <div className="ShowAllSectionHeader">
@@ -97,21 +98,21 @@ const ShowAllSection = () => {
                 </span>
 
                 <span className="OpenSection">
-                    { status === "Empty" ?
+                    { status === "Empty" || status === "Not found" ?
                         <img className="cross" src={Cross} alt="Section Unavailable"/>
                         :
-                        (!isShowAllSectionOpened ?
-                            <img className="arrow" id="ToggleShowAllSection" src={ArrowDown} onClick={() => {isNaN(currentCat) ? getAllCats(user) : getOneCat(user, currentCat); setShowAllSectionOpened(true)}} alt="Open"/>
+                        (!isShowAllCatsSectionOpened ?
+                            <img className="arrow" id="ToggleShowAllSection" src={ArrowDown} onClick={() => {isNaN(currentCat) ? getAllCats(user) : getOneCat(user, currentCat); setShowAllCatsSectionOpened(true)}} alt="Open"/>
                             :
-                            <img className="arrow" id="ToggleShowAllSection" src={ArrowUp} onClick={() => {setShowAllSectionOpened(false)}} alt="Open"/>)
+                            <img className="arrow" id="ToggleShowAllSection" src={ArrowUp} onClick={() => {setShowAllCatsSectionOpened(false)}} alt="Open"/>)
                     }
                 </span>
             </div>
-            {!isShowAllSectionOpened ? null :
+            {!isShowAllCatsSectionOpened ? null :
                 <div className="ShowAllSectionContent">
                     <div className="info-block"><div className="info-wrapper" id="fknclose"/></div>
                 </div>}
         </div>
 }
 
-export default ShowAllSection
+export default ShowAllCatsSection

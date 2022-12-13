@@ -11,12 +11,21 @@ class Api {
         return "Offline"
     }
 
+    static async CheckCat(user, id) {
+        let answer = await fetch( `https://cats.petiteweb.dev/api/single/${user}/show/${id}`)
+        return answer.ok ? "Found" : "Not found"
+    }
+
     static async getAll(user) {
         return await fetch( `https://cats.petiteweb.dev/api/single/${user}/show`).then(a => a.json())
     }
 
     static async getSingle(user, id) {
         return await fetch( `https://cats.petiteweb.dev/api/single/${user}/show/${id}`).then(a => a.json())
+    }
+
+    static async getIds(user) {
+        return await fetch( `https://cats.petiteweb.dev/api/single/${user}/ids/`).then(a => a.json())
     }
 
     static async addCat(body, path="https://cats.petiteweb.dev/api/single/astrology_noob/add") {
@@ -29,10 +38,6 @@ class Api {
             },
             body: JSON.stringify(body)
         }).then(res => res.json()).then(data => data);
-    }
-
-    static async getIds(path="https://cats.petiteweb.dev/api/single/astrology_noob/ids") {
-        return await fetch(path).then(res => res.json()).then(data => data);
     }
 
     static async updateCat(id, body, path="https://cats.petiteweb.dev/api/single/astrology_noob/update") {
