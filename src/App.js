@@ -1,7 +1,10 @@
 import React, {useState} from "react";
+
 import ShowAllCatsSection from "./Components/ShowAllCatsSection";
 import ShowAllIdsSection from "./Components/ShowAllIdsSection";
 import CreateNewCatSection from "./Components/CreateNewCatSection";
+import EditCurrentCatSection from "./Components/EditCurrentCatSection";
+
 import Api from "./api";
 
 const Context = React.createContext({})
@@ -28,6 +31,7 @@ function App() {
 	let [isShowAllCatsSectionOpened, setShowAllCatsSectionOpened] = useState(false)
 	let [isShowAllIdsSectionOpened, setShowAllIdsSectionOpened] = useState(false)
 	let [isCreateNewCatSectionOpened, setCreateNewCatSectionOpened] = useState(false)
+	let [isEditCurrentCatSectionOpened, setEditCurrentCatSectionOpened] = useState(false)
 	return (
 		<Context.Provider value={{
 			status : status,
@@ -43,7 +47,9 @@ function App() {
 			isShowAllIdsSectionOpened:isShowAllIdsSectionOpened,
 			setShowAllIdsSectionOpened:setShowAllIdsSectionOpened,
 			isCreateNewCatSectionOpened:isCreateNewCatSectionOpened,
-			setCreateNewCatSectionOpened:setCreateNewCatSectionOpened
+			setCreateNewCatSectionOpened:setCreateNewCatSectionOpened,
+			isEditCurrentCatSectionOpened:isEditCurrentCatSectionOpened,
+			setEditCurrentCatSectionOpened:setEditCurrentCatSectionOpened
 		}}>
 		<main className="App" id="crack">
 			<div className="UserSector">
@@ -57,10 +63,15 @@ function App() {
 
 					onChange={async (e) => {
 						let tmps
+
 						setUser(e.target.value)
+						setCurrentCat(NaN)
+
 						setShowAllCatsSectionOpened(false)
 						setShowAllIdsSectionOpened(false)
-						setCurrentCat(NaN)
+						setCreateNewCatSectionOpened(false)
+						setEditCurrentCatSectionOpened(false)
+
 						await Api.CheckUser(e.target.value).then(a => {
 							tmps = a;
 							setStatus(a)
@@ -80,7 +91,12 @@ function App() {
 
 					onChange={(e) => {
 						setCurrentCat(parseInt(e.target.value))
+
 						setShowAllCatsSectionOpened(false)
+						setShowAllIdsSectionOpened(false)
+						setCreateNewCatSectionOpened(false)
+						setEditCurrentCatSectionOpened(false)
+
 						if (e.target.value === '')  Api.CheckUser(user).then(a => setStatus(a))
 						else Api.CheckCat(user, e.target.value).then(a => setStatus(a))
 					}}
@@ -90,6 +106,7 @@ function App() {
 			<ShowAllCatsSection/>
 			<ShowAllIdsSection/>
 			<CreateNewCatSection/>
+			<EditCurrentCatSection/>
 		</main>
 		</Context.Provider>
 	);

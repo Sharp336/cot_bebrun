@@ -89,8 +89,8 @@ const ShowAllCatsSection = () => {
     return status === "Offline" ? null :
         <div className="ShowAllSection">
             <div className="ShowAllSectionHeader">
-                <span className="GETlabel">
-                    GET
+                <span className="PUTlabel">
+                    PUT
                 </span>
 
                 <span className="SectionRequest">

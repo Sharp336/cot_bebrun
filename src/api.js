@@ -36,19 +36,19 @@ class Api {
                 "Accept": "application/json"
             },
             body: JSON.stringify(data)
-        }).then(res => res.json());
+        }).then(a => a.json());
     }
 
-    static async updateCat(id, body, path="https://cats.petiteweb.dev/api/single/astrology_noob/update") {
-        return await fetch(path + "/" + id, {
+    static async updateCat(user, id, data) {
+        return await fetch(`https://cats.petiteweb.dev/api/single/${user}/update/${id}`, {
                     method: "PUT",  
                     headers: {
                         "Access-Control-Allow-Origin": "*",
                         "Content-Type": "application/json",
                         "Accept": "application/json"
                     },
-                    body: JSON.stringify(body)
-                }).then(res => res.json()).then(data => data.data);
+                    body: JSON.stringify(data)
+                }).then(a => a.json())
     }
 
     static async deleteCat(id, path="https://cats.petiteweb.dev/api/single/astrology_noob/delete") {
