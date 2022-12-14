@@ -36,6 +36,8 @@ div.UserSector{
 
 input.UserSector{
 	vertical-align: middle;
+	border-radius: 0.275rem;
+	border: 1px solid #ced4da;
 }
 
 .GETlabel{
