@@ -5,9 +5,6 @@ import React, {useContext, useState} from "react";
 import {Context} from "../../App";
 import Api from "../../api";
 
-let showResult = function (response) {
-    console.log(response)
-}
 let createNewCat = async function(user, id, name, rate, age, description, image, favourite){
     let data = {
         "id": id,
@@ -18,7 +15,7 @@ let createNewCat = async function(user, id, name, rate, age, description, image,
         "image": image,
         "favorite": favourite
     }
-    await Api.addCat(user, data).then(a => showResult(a))
+    await Api.addCat(user, data).then(a => alert(a.message))
 }
 
 const CreateNewCatSection = () => {
@@ -44,43 +41,44 @@ const CreateNewCatSection = () => {
 
                 <span className="OpenSection">
                     {!isCreateNewCatSectionOpened ?
-                            <img className="arrow" id="ToggleCreateNewCatSection" src={ArrowDown} onClick={() => {
-                                setCreateNewCatSectionOpened(true)
-                                setCatName('')
-                                setPhotoUrl('')
-                                setCatAge(NaN)
-                                setCatRate(NaN)
-                                setCatDesc('')
-                                setCatIsFavourite(false)
-                            }} alt="Open"/>
-                            :
-                            <img className="arrow" id="ToggleCreateNewCatSection" src={ArrowUp} onClick={() => {setCreateNewCatSectionOpened(false)}} alt="Open"/>
+                        <img className="arrow" id="ToggleCreateNewCatSection" src={ArrowDown} onClick={() => {
+                            setCreateNewCatSectionOpened(true)
+                            setCatName('')
+                            setPhotoUrl('')
+                            setCatAge(NaN)
+                            setCatRate(NaN)
+                            setCatDesc('')
+                            setCatIsFavourite(false)
+                        }} alt="Open"/>
+                        :
+                        <img className="arrow" id="ToggleCreateNewCatSection" src={ArrowUp} onClick={() => {setCreateNewCatSectionOpened(false)}} alt="Open"/>
                     }
                 </span>
             </div>
             {!isCreateNewCatSectionOpened ? null :
                 <div className="CreateNewCatSectionContent">
                     <h1>Добавить кота</h1>
-                    <label htmlFor="id">ID</label>
-                    <input className="CreateNewCatSectionContent" type="number" name="id" onChange={e => setCatId(parseInt(e.target.value))}/>
-                    <label htmlFor="name">Имя кота</label>
-                    <input className="CreateNewCatSectionContent" type="text" name="name" onChange={e => setCatName(e.target.value)}/>
-                    <label htmlFor="image">Ссылка на фото</label>
-                    <input className="CreateNewCatSectionContent" type="url" name="image" onChange={e => setPhotoUrl(e.target.value)}/>
-                    <label htmlFor="age">Возраст</label>
-                    <input className="CreateNewCatSectionContent" type="number" name="age" onChange={e => setCatAge(parseInt(e.target.value))}/>
-                    <label htmlFor="rate">Рейтинг</label>
-                    <input className="CreateNewCatSectionContent" type="number" name="rate" onChange={e => setCatRate(parseInt(e.target.value))}/>
-                    <label htmlFor="description">Описание</label>
-                    <input className="CreateNewCatSectionContent" type="text" name="description" onChange={e => setCatDesc(e.target.value)}/>
-                    <label htmlFor="isfavourite">Топовый ли кот ?</label>
-                    <input className="CreateNewCatSectionContent" type="checkbox" name="isfavourite" onChange={() => {setCatIsFavourite(!catIsFavourite)}}/>
+                    <form className="CreateNewCatSectionContent" onSubmit={(e) => {
+                        e.preventDefault()
+                        createNewCat(user, catId, catName, catRate, catAge, catDesc, photoUrl, catIsFavourite)}
+                    }>
+                        <label className="CreateNewCatSectionContent" htmlFor="id">ID</label><br/>
+                        <input className="CreateNewCatSectionContent" type="number" name="id" onChange={e => setCatId(parseInt(e.target.value))} required={true} min={0} max={99}/><br/><br/>
+                        <label className="CreateNewCatSectionContent" htmlFor="name">Имя кота</label><br/>
+                        <input className="CreateNewCatSectionContent" type="text" name="name" onChange={e => setCatName(e.target.value)} required={true} maxLength={12}/><br/><br/>
+                        <label className="CreateNewCatSectionContent" htmlFor="image">Ссылка на фото</label><br/>
+                        <input className="CreateNewCatSectionContent" id="widerinpt" type="url" name="image" onChange={e => setPhotoUrl(e.target.value)} required={true} minLength={10}/><br/><br/>
+                        <label className="CreateNewCatSectionContent" htmlFor="age">Возраст</label><br/>
+                        <input className="CreateNewCatSectionContent" type="number" name="age" onChange={e => setCatAge(parseInt(e.target.value))} required={true} min={0} max={20}/><br/><br/>
+                        <label className="CreateNewCatSectionContent" htmlFor="rate">Рейтинг</label><br/>
+                        <input className="CreateNewCatSectionContent" type="number" name="rate" onChange={e => setCatRate(parseInt(e.target.value))} required={true} min={0} max={10}/><br/><br/>
+                        <label className="CreateNewCatSectionContent" htmlFor="description">Описание</label><br/>
+                        <input className="CreateNewCatSectionContent" id="widerinpt" type="text" name="description" onChange={e => setCatDesc(e.target.value)} required={true} maxLength={150}/><br/><br/>
+                        <label className="CreateNewCatSectionContent" htmlFor="isfavourite">Топовый ли кот ?</label><br/>
+                        <input className="CreateNewCatSectionContentCheckBox" type="checkbox" name="isfavourite" onChange={() => {setCatIsFavourite(!catIsFavourite)}}/><br/>
 
-                    <div className="CreateNewCatSectionContentButtonSector">
-                        <button className="CreateNewCatSectionContentSubmitButton" type="submit" name="submit" value="add" onClick={() => {
-                            createNewCat(user, catId, catName, catRate, catAge, catDesc, photoUrl, catIsFavourite)}
-                        }>Добавить</button>
-                    </div>
+                        <button className="CreateNewCatSectionContentSubmitButton" type="submit" name="submit" value="add" onSubmit={(e)=> e.preventDefault()}>Добавить</button>
+                    </form>
                 </div>}
         </div>
 }
