@@ -20,7 +20,7 @@ let createNewCat = async function(user, id, name, rate, age, description, image,
 
 const CreateNewCatSection = () => {
     const context = useContext(Context)
-    const [user, status, isCreateNewCatSectionOpened, setCreateNewCatSectionOpened] = [context.user, context.status, context.isCreateNewCatSectionOpened, context.setCreateNewCatSectionOpened]
+    const [user, currentCat, status, setStatus, isCreateNewCatSectionOpened, setCreateNewCatSectionOpened, setShowAllCatsSectionOpened, setShowAllIdsSectionOpened, setDeleteCurrentCatSectionOpened, setEditCurrentCatSectionOpened] = [context.user, context.currentCat, context.status, context.setStatus, context.isCreateNewCatSectionOpened, context.setCreateNewCatSectionOpened, context.setShowAllCatsSectionOpened, context.setShowAllIdsSectionOpened, context.setDeleteCurrentCatSectionOpened, context.setEditCurrentCatSectionOpened]
     const [catId, setCatId] = useState(NaN)
     const [catName, setCatName] = useState('')
     const [photoUrl, setPhotoUrl] = useState('')
@@ -58,9 +58,18 @@ const CreateNewCatSection = () => {
             {!isCreateNewCatSectionOpened ? null :
                 <div className="CreateNewCatSectionContent">
                     <h1>Добавить кота</h1>
-                    <form className="CreateNewCatSectionContent" onSubmit={(e) => {
+                    <form className="CreateNewCatSectionContent" onSubmit={async (e) => {
                         e.preventDefault()
-                        createNewCat(user, catId, catName, catRate, catAge, catDesc, photoUrl, catIsFavourite)}
+                        createNewCat(user, catId, catName, catRate, catAge, catDesc, photoUrl, catIsFavourite)
+                        setShowAllCatsSectionOpened(false)
+                        setShowAllIdsSectionOpened(false)
+                        setCreateNewCatSectionOpened(false)
+                        setEditCurrentCatSectionOpened(false)
+                        setDeleteCurrentCatSectionOpened(false)
+
+                        await Api.CheckCat(user, currentCat).then(a => setStatus(a))
+
+                    }
                     }>
                         <label className="CreateNewCatSectionContent" htmlFor="id">ID</label><br/>
                         <input className="CreateNewCatSectionContent" type="number" name="id" onChange={e => setCatId(parseInt(e.target.value))} required={true} min={0} max={99}/><br/><br/>

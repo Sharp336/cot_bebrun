@@ -54,8 +54,6 @@ const EditCurrentCatSection = () => {
                                         setCatDesc(answer.description)
                                         setCatIsFavourite(answer.favorite)
 
-                                        console.log(answer)
-
                                         setEditCurrentCatSectionOpened(true)
                                     })
                                 }} alt="Open"/>

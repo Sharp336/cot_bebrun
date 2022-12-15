@@ -51,10 +51,10 @@ class Api {
                 }).then(a => a.json())
     }
 
-    static async deleteCat(id, path="https://cats.petiteweb.dev/api/single/astrology_noob/delete") {
-        return await fetch(path + "/" + id, {
+    static async deleteCat(user, id) {
+        return await fetch(`https://cats.petiteweb.dev/api/single/${user}/delete/${id}`, {
             method: "DELETE"
-        }).then(res => res.json()).then(data => data.data);
+        }).then(a => a.json());
     }
 }
 

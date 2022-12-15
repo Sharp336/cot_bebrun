@@ -6,6 +6,7 @@ import CreateNewCatSection from "./Components/CreateNewCatSection";
 import EditCurrentCatSection from "./Components/EditCurrentCatSection";
 
 import Api from "./api";
+import DeleteCurrentCatSection from "./Components/DeleteCurrentCatSection";
 
 const Context = React.createContext({})
 function DisplayStatus(status){
@@ -32,6 +33,7 @@ function App() {
 	let [isShowAllIdsSectionOpened, setShowAllIdsSectionOpened] = useState(false)
 	let [isCreateNewCatSectionOpened, setCreateNewCatSectionOpened] = useState(false)
 	let [isEditCurrentCatSectionOpened, setEditCurrentCatSectionOpened] = useState(false)
+	let [isDeleteCurrentCatSectionOpened, setDeleteCurrentCatSectionOpened] = useState(false)
 	return (
 		<Context.Provider value={{
 			status : status,
@@ -49,7 +51,9 @@ function App() {
 			isCreateNewCatSectionOpened:isCreateNewCatSectionOpened,
 			setCreateNewCatSectionOpened:setCreateNewCatSectionOpened,
 			isEditCurrentCatSectionOpened:isEditCurrentCatSectionOpened,
-			setEditCurrentCatSectionOpened:setEditCurrentCatSectionOpened
+			setEditCurrentCatSectionOpened:setEditCurrentCatSectionOpened,
+			isDeleteCurrentCatSectionOpened:isDeleteCurrentCatSectionOpened,
+			setDeleteCurrentCatSectionOpened:setDeleteCurrentCatSectionOpened
 		}}>
 		<main className="App" id="crack">
 			<div className="UserSector">
@@ -71,6 +75,7 @@ function App() {
 						setShowAllIdsSectionOpened(false)
 						setCreateNewCatSectionOpened(false)
 						setEditCurrentCatSectionOpened(false)
+						setDeleteCurrentCatSectionOpened(false)
 
 						await Api.CheckUser(e.target.value).then(a => {
 							tmps = a;
@@ -96,6 +101,7 @@ function App() {
 						setShowAllIdsSectionOpened(false)
 						setCreateNewCatSectionOpened(false)
 						setEditCurrentCatSectionOpened(false)
+						setDeleteCurrentCatSectionOpened(false)
 
 						if (e.target.value === '')  Api.CheckUser(user).then(a => setStatus(a))
 						else Api.CheckCat(user, e.target.value).then(a => setStatus(a))
@@ -107,6 +113,7 @@ function App() {
 			<ShowAllIdsSection/>
 			<CreateNewCatSection/>
 			<EditCurrentCatSection/>
+			<DeleteCurrentCatSection/>
 		</main>
 		</Context.Provider>
 	);
